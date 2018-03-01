@@ -35,13 +35,13 @@ while (i++ < 15) {
 **Alloc**
 
 ```js
-videos.reduce((a, v) => Object.assign(a, {[v.id]: v.title}), {});
+videos.reduce((a, v) => Object.assign({}, a, {[v.id]: v.title}), {});
 ```
 
 **Extend**
 
 ```js
-`videos.reduce((a, v) => Object.assign({}, a, {[v.id]: v.title}), {});`
+videos.reduce((a, v) => Object.assign(a, {[v.id]: v.title}), {});`
 ```
 
 **Mutate**
@@ -58,6 +58,10 @@ videos.reduce((a, v) => {
 * alloc: 183
 * extend: 75
 * mutate: 0
+
+<details>
+
+<summary>output of `d8 --trace-gc` for each example</summary>
 
 | alloc | extend | mutate |
 |----|----|----|
@@ -244,4 +248,21 @@ videos.reduce((a, v) => {
 | 1833 ms: Scavenge 6.7 (10.9) -> 5.7 (10.9) MB, 0.2 / 0.0 ms  allocation failure  |  |  |
 | 1842 ms: Scavenge 6.7 (10.9) -> 5.7 (10.9) MB, 0.2 / 0.0 ms  allocation failure  |  |  |
 | 1852 ms: Scavenge 6.7 (10.9) -> 5.7 (10.9) MB, 0.4 / 0.0 ms  allocation failure  |  |  |
-|  |  |  |
+
+</details>
+
+
+## Runtime in Different Engines
+
+
+I thought it would be interesting to do a follow-up test measuring the runtime
+length of each of these with [`eshost`](https://github.com/bterlson/eshost-cli)
+
+I wrapped each reduction in a simple Date.now time delta calculation like:
+`const s = Date.now(); /* ... */;console.log(Date.now() - s);.
+
+| Engine       | alloc | extend | mutate | reasonml |
+|--------------|------:|-------:|-------:|---------:|
+| Chakra       |  291  |   99   |    19  |    27    |
+| SpiderMonkey |  164  |   49   |    10  |    23    |
+| V8           |  315  |  114   |    12  |    21    |
