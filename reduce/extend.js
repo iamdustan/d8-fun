@@ -16,5 +16,7 @@ let i = 0;
 while (i++ < 15) {
   videos.push(...videos);
 }
-let result = videos.reduce((a, v) => Object.assign({}, a, {[v.id]: v.title}), {});
+const start = Date.now();
+let result = videos.reduce((acc, video) => Object.assign(acc, {[video.id]: video.title}), {});
+console.log('alloc ', Date.now() - start);
 

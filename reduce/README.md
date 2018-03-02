@@ -259,10 +259,11 @@ I thought it would be interesting to do a follow-up test measuring the runtime
 length of each of these with [`eshost`](https://github.com/bterlson/eshost-cli)
 
 I wrapped each reduction in a simple Date.now time delta calculation like:
-`const s = Date.now(); /* ... */;console.log(Date.now() - s);.
+`const s = Date.now(); /* ... */;console.log(Date.now() - s);. 
 
 | Engine       | alloc | extend | mutate | reasonml |
 |--------------|------:|-------:|-------:|---------:|
 | Chakra       |  291  |   99   |    19  |    27    |
 | SpiderMonkey |  164  |   49   |    10  |    23    |
 | V8           |  315  |  114   |    12  |    21    |
+
