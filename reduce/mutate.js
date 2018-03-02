@@ -21,4 +21,4 @@ let result = videos.reduce((a, v) => {
   a[v.id] = v.title;
   return a;
 }, {});
-console.log('alloc ', Date.now() - start);
+print('alloc ', Date.now() - start);

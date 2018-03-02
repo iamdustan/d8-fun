@@ -18,5 +18,5 @@ while (i++ < 15) {
 }
 const start = Date.now();
 let result = videos.reduce((a, v) => Object.assign({}, a, {[v.id]: v.title}), {});
-console.log('alloc ', Date.now() - start);
+print('alloc ', Date.now() - start);
 

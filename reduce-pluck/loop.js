@@ -63,7 +63,7 @@ const stores = repeat(100, createStore).reduce((memo, store) => {
 // actual test here
 //
 
-// console.log('Stores: ', Object.keys(stores).length);
+// print('Stores: ', Object.keys(stores).length);
 
 const start = Date.now();
 repeat(10000, () => {

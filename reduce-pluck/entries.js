@@ -63,6 +63,8 @@ const stores = repeat(100, createStore).reduce((memo, store) => {
 // actual test here
 //
 
+// print('Stores: ', Object.keys(stores).length);
+
 const start = Date.now();
 const accumulateState = (memo, [name, {state}]) => {
   memo[name] = state;
