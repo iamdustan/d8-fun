@@ -12,9 +12,9 @@ let result =
 /* Using reduceU (uncurried) to avoid perf toll of currying */
   Belt_List.reduceU(
     v,
-    Belt_MapString.empty,
+    Belt_MapInt.empty,
     ([@bs] (dict, video: Common.video) =>
-      Belt_MapString.set(dict, string_of_int(video.id), video.title)),
+      Belt_MapInt.set(dict, video.id, video.title)),
   );
 
 Js.log2("reasonml Belt", Js.Date.now() -. start);
