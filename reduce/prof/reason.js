@@ -327,7 +327,7 @@ var result = fold_left((function (dict, video) {
         return dict;
       }), { }, v);
 
-console.log("reasonml", Date.now() - start);
+print("reasonml", Date.now() - start);
 
 
 /* v Not a pure module */

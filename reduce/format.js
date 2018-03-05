@@ -6,6 +6,8 @@ const cases = [
   'alloc',
   'extend',
   'mutate',
+  'prof/reason',
+  'prof/reasonBelt',
 ];
 
 const traces = cases.map(c => {
@@ -17,8 +19,14 @@ const traces = cases.map(c => {
     .map(str => str.replace(/\[([^\]])*\]\s+/, ''));
 });
 
+
 const table = traces[0].reduce((memo, cur, i, all) => {
-  return memo.concat('| ' + [cur, (traces[1][i] || ''), (traces[2][i] || '')].join(' | ') + ' |');
+  return memo.concat('| ' + [
+    cur, (traces[1][i] || ''),
+    (traces[2][i] || ''),
+    (traces[3][i] || ''),
+    (traces[4][i] || ''),
+  ].join(' | ') + ' |');
 }, []).join('\n');
 
 console.log('GC Pauses');

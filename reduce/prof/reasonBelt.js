@@ -326,7 +326,7 @@ var result = reduceU$1(v, empty$1, (function (dict, video) {
         return set$1(dict, video[/* id */0], video[/* title */1]);
       }));
 
-console.log("reasonml Belt", Date.now() - start);
+print("reasonml Belt", Date.now() - start);
 
 
 /* v Not a pure module */
