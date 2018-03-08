@@ -23,7 +23,7 @@ var v = prep(0, Common$Prof.videos);
 
 var start = Date.now();
 
-var result = Belt_List.reduceU(v, Belt_MapInt.empty, (function (dict, video) {
+var result = Belt_List.reduce(v, Belt_MapInt.empty, (function (dict, video) {
         return Belt_MapInt.set(dict, video[/* id */0], video[/* title */1]);
       }));
 

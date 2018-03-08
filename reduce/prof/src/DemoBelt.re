@@ -9,11 +9,10 @@ let v = prep(0, Common.videos);
 let start = Js.Date.now();
 
 let result =
-/* Using reduceU (uncurried) to avoid perf toll of currying */
-  Belt_List.reduceU(
+  Belt_List.reduce(
     v,
     Belt_MapInt.empty,
-    ([@bs] (dict, video: Common.video) =>
+    ((dict, video: Common.video) =>
       Belt_MapInt.set(dict, video.id, video.title)),
   );
 

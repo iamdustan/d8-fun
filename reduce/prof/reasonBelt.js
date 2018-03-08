@@ -88,7 +88,106 @@ undefined_recursive_module.tag = 248;
 
 /*  Not a pure module */
 
+function caml_array_sub(x, offset, len) {
+  var result = new Array(len);
+  var j = 0;
+  var i = offset;
+  while(j < len) {
+    result[j] = x[i];
+    j = j + 1 | 0;
+    i = i + 1 | 0;
+  }
+  return result;
+}
+
+
 /* No side effect */
+
+function app(_f, _args) {
+  while(true) {
+    var args = _args;
+    var f = _f;
+    var arity = f.length;
+    var arity$1 = arity ? arity : 1;
+    var len = args.length;
+    var d = arity$1 - len | 0;
+    if (d) {
+      if (d < 0) {
+        _args = caml_array_sub(args, arity$1, -d | 0);
+        _f = f.apply(null, caml_array_sub(args, 0, arity$1));
+        continue ;
+        
+      } else {
+        return (function(f,args){
+        return function (x) {
+          return app(f, args.concat(/* array */[x]));
+        }
+        }(f,args));
+      }
+    } else {
+      return f.apply(null, args);
+    }
+  }
+}
+
+function curry_2(o, a0, a1, arity) {
+  if (arity > 7 || arity < 0) {
+    return app(o, /* array */[
+                a0,
+                a1
+              ]);
+  } else {
+    switch (arity) {
+      case 0 : 
+      case 1 : 
+          return app(o(a0), /* array */[a1]);
+      case 2 : 
+          return o(a0, a1);
+      case 3 : 
+          return (function (param) {
+              return o(a0, a1, param);
+            });
+      case 4 : 
+          return (function (param, param$1) {
+              return o(a0, a1, param, param$1);
+            });
+      case 5 : 
+          return (function (param, param$1, param$2) {
+              return o(a0, a1, param, param$1, param$2);
+            });
+      case 6 : 
+          return (function (param, param$1, param$2, param$3) {
+              return o(a0, a1, param, param$1, param$2, param$3);
+            });
+      case 7 : 
+          return (function (param, param$1, param$2, param$3, param$4) {
+              return o(a0, a1, param, param$1, param$2, param$3, param$4);
+            });
+      
+    }
+  }
+}
+
+function _2(o, a0, a1) {
+  var arity = o.length;
+  if (arity === 2) {
+    return o(a0, a1);
+  } else {
+    return curry_2(o, a0, a1, arity);
+  }
+}
+
+function __2(o) {
+  var arity = o.length;
+  if (arity === 2) {
+    return o;
+  } else {
+    return (function (a0, a1) {
+        return _2(o, a0, a1);
+      });
+  }
+}
+
 
 /* No side effect */
 
@@ -146,6 +245,10 @@ function reduceU$1(_l, _accu, f) {
       return accu;
     }
   }
+}
+
+function reduce$1(l, accu, f) {
+  return reduceU$1(l, accu, __2(f));
 }
 
 
@@ -322,7 +425,7 @@ var v = prep(0, videos);
 
 var start = Date.now();
 
-var result = reduceU$1(v, empty$1, (function (dict, video) {
+var result = reduce$1(v, empty$1, (function (dict, video) {
         return set$1(dict, video[/* id */0], video[/* title */1]);
       }));
 
