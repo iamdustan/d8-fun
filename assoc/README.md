@@ -13,13 +13,16 @@ To run:
 ## Output
 
 ```sh
-$ node --allow-natives-syntax assoc/benchmark.js
-funReducer x 1,034,945 ops/sec ±0.84% (91 runs sampled)
-hiddenReducer x 13,977,885 ops/sec ±1.43% (91 runs sampled)
-immutableReducer x 2,281,783 ops/sec ±0.78% (93 runs sampled)
+funReducer x 985,497 ops/sec ±1.07% (90 runs sampled)
+hiddenReducer x 9,612,552 ops/sec ±0.79% (91 runs sampled)
+hiddenReducerWithCurrying x 4,252,116 ops/sec ±0.98% (90 runs sampled)
+immutableReducer x 2,146,983 ops/sec ±0.25% (95 runs sampled)
+spreadReducer x 525,291 ops/sec ±0.53% (94 runs sampled)
 funUtils has fast properties: true
 hiddenUtils has fast properties: true
+hiddenWithCurryingUtils has fast properties: true
 immutable has fast properties: true
+spread has fast properties: true
 ```
 
 The custom assoc function performs ~13x better than the generic assoc function

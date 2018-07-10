@@ -3,6 +3,7 @@ const funReducer = require('./genericAssoc');
 const hiddenReducer = require('./customAssoc');
 const hiddenReducerWithCurrying = require('./customAssocWithCurrying');
 const immutableReducer = require('./immutable');
+const spreadReducer = require('./spread');
 const {
   BETA_FEATURE_TOGGLED,
   BETA_FEATURE_ENABLED,
@@ -20,6 +21,7 @@ let funState = funReducer(undefined, {type: 'INIT'});
 let hiddenState = hiddenReducer(undefined, {type: 'INIT'});
 let curriedState = hiddenReducerWithCurrying(undefined, {type: 'INIT'});
 let immutableState = immutableReducer(undefined, {type: 'INIT'});
+let spreadState = spreadReducer(undefined, {type: 'INIT'});
 const keys = Object.keys(funState);
 
 const create = fn => () => {
@@ -38,8 +40,9 @@ const create = fn => () => {
 suite
   .add('funReducer', create(action => { funState = funReducer(funState, action); }))
   .add('hiddenReducer', create(action => { hiddenState = hiddenReducer(hiddenState, action); }))
-  .add('hiddenReducerWithCurrying', create(action => { curriedState = hiddenReducerWithCurrying(hiddenState, action); }))
+  .add('hiddenReducerWithCurrying', create(action => { curriedState = hiddenReducerWithCurrying(curriedState, action); }))
   .add('immutableReducer', create(action => { immutableState = immutableReducer(immutableState, action); }))
+  .add('spreadReducer', create(action => { spreadState = spreadReducer(spreadState, action); }))
   .on('cycle', function(event) {
     if (event.target.aborted || event.target.error) {
       console.log(event.target.name + ' aborted');
@@ -54,3 +57,4 @@ console.log('funUtils has fast properties:', %HasFastProperties(funState));
 console.log('hiddenUtils has fast properties:', %HasFastProperties(hiddenState));
 console.log('hiddenWithCurryingUtils has fast properties:', %HasFastProperties(curriedState));
 console.log('immutable has fast properties:', %HasFastProperties(immutableState));
+console.log('spread has fast properties:', %HasFastProperties(spreadState));
