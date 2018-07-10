@@ -1,0 +1,13 @@
+{
+  "name": "d8-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "repository": "git@github.com:iamdustan/d8-fun.git",
+  "author": "Dustan Kasten <dustan.kasten@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "benchmark": "^2.1.4",
+    "immutable": "^3.8.2"
+  }
+}
