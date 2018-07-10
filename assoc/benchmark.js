@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark');
 const funReducer = require('./genericAssoc');
 const hiddenReducer = require('./customAssoc');
+const hiddenReducerWithCurrying = require('./customAssocWithCurrying');
 const immutableReducer = require('./immutable');
 const {
   BETA_FEATURE_TOGGLED,
@@ -17,52 +18,28 @@ var suite = new Benchmark.Suite({
 });
 let funState = funReducer(undefined, {type: 'INIT'});
 let hiddenState = hiddenReducer(undefined, {type: 'INIT'});
+let curriedState = hiddenReducerWithCurrying(undefined, {type: 'INIT'});
 let immutableState = immutableReducer(undefined, {type: 'INIT'});
 const keys = Object.keys(funState);
+
+const create = fn => () => {
+  iteration++
+  ((index++ < keys.length -1) || (index = 0));
+  const action = iteration % 3
+  ? {
+      type: BETA_FEATURE_ENABLED,
+      payload: keys[index]
+    }
+  : { type: BETA_FEATURE_TOGGLED,
+      payload: keys[index]
+    };
+  fn(action);
+};
 suite
-  .add('funReducer', () => {
-    iteration++
-    ((index++ < keys.length -1) || (index = 0));
-    const action = iteration % 3
-    ? {
-        type: BETA_FEATURE_ENABLED,
-        payload: keys[index]
-      }
-    : { type: BETA_FEATURE_TOGGLED,
-        payload: keys[index]
-      };
-
-    funState = funReducer(funState, action);
-  })
-  // case 2
-  .add('hiddenReducer', () => {
-    iteration++
-    ((index++ < keys.length -1) || (index = 0));
-    const action = iteration % 3
-    ? {
-        type: BETA_FEATURE_ENABLED,
-        payload: keys[index]
-      }
-    : { type: BETA_FEATURE_TOGGLED,
-        payload: keys[index]
-      };
-
-    hiddenState = hiddenReducer(hiddenState, action);
-  })
-  .add('immutableReducer', () => {
-    iteration++
-    ((index++ < keys.length -1) || (index = 0));
-    const action = iteration % 3
-    ? {
-        type: BETA_FEATURE_ENABLED,
-        payload: keys[index]
-      }
-    : { type: BETA_FEATURE_TOGGLED,
-        payload: keys[index]
-      };
-
-    immutableState = immutableReducer(immutableState, action);
-  })
+  .add('funReducer', create(action => { funState = funReducer(funState, action); }))
+  .add('hiddenReducer', create(action => { hiddenState = hiddenReducer(hiddenState, action); }))
+  .add('hiddenReducerWithCurrying', create(action => { curriedState = hiddenReducerWithCurrying(hiddenState, action); }))
+  .add('immutableReducer', create(action => { immutableState = immutableReducer(immutableState, action); }))
   .on('cycle', function(event) {
     if (event.target.aborted || event.target.error) {
       console.log(event.target.name + ' aborted');
@@ -75,4 +52,5 @@ suite
 
 console.log('funUtils has fast properties:', %HasFastProperties(funState));
 console.log('hiddenUtils has fast properties:', %HasFastProperties(hiddenState));
+console.log('hiddenWithCurryingUtils has fast properties:', %HasFastProperties(curriedState));
 console.log('immutable has fast properties:', %HasFastProperties(immutableState));
