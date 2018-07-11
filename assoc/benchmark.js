@@ -4,6 +4,7 @@ const hiddenReducer = require('./customAssoc');
 const hiddenReducerWithCurrying = require('./customAssocWithCurrying');
 const immutableReducer = require('./immutable');
 const spreadReducer = require('./spread');
+const bitsReducer = require('./bits');
 const {
   BETA_FEATURE_TOGGLED,
   BETA_FEATURE_ENABLED,
@@ -22,6 +23,7 @@ let hiddenState = hiddenReducer(undefined, {type: 'INIT'});
 let curriedState = hiddenReducerWithCurrying(undefined, {type: 'INIT'});
 let immutableState = immutableReducer(undefined, {type: 'INIT'});
 let spreadState = spreadReducer(undefined, {type: 'INIT'});
+let bitsState = bitsReducer(undefined, {type: 'INIT'});
 const keys = Object.keys(funState);
 
 const create = fn => () => {
@@ -30,10 +32,10 @@ const create = fn => () => {
   const action = iteration % 3
   ? {
       type: BETA_FEATURE_ENABLED,
-      payload: keys[index]
+      payload: keys[index],
     }
   : { type: BETA_FEATURE_TOGGLED,
-      payload: keys[index]
+      payload: keys[index],
     };
   fn(action);
 };
@@ -43,6 +45,7 @@ suite
   .add('hiddenReducerWithCurrying', create(action => { curriedState = hiddenReducerWithCurrying(curriedState, action); }))
   .add('immutableReducer', create(action => { immutableState = immutableReducer(immutableState, action); }))
   .add('spreadReducer', create(action => { spreadState = spreadReducer(spreadState, action); }))
+  .add('bitsReducer', create(action => { bitsState = bitsReducer(bitsState, action); }))
   .on('cycle', function(event) {
     if (event.target.aborted || event.target.error) {
       console.log(event.target.name + ' aborted');
