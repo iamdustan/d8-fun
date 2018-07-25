@@ -2,6 +2,7 @@ const Benchmark = require('benchmark');
 const funReducer = require('./genericAssoc');
 const funReducerWithMemo = require('./genericAssocWithMemo');
 const hiddenReducer = require('./customAssoc');
+const runtimeReducer = require('./customAssocRuntime');
 const immutableReducer = require('./immutable');
 const spreadReducer = require('./spread');
 const bitsReducer = require('./bits');
@@ -22,6 +23,7 @@ var suite = new Benchmark.Suite({
 let funState = funReducer(undefined, {type: 'INIT'});
 let curriedState = funReducerWithMemo(undefined, {type: 'INIT'});
 let hiddenState = hiddenReducer(undefined, {type: 'INIT'});
+let runtimeState = runtimeReducer(undefined, {type: 'INIT'});
 let immutableState = immutableReducer(undefined, {type: 'INIT'});
 let spreadState = spreadReducer(undefined, {type: 'INIT'});
 let bitsState = bitsReducer(undefined, {type: 'INIT'});
@@ -45,6 +47,7 @@ suite
   .add('funReducer', create(action => { funState = funReducer(funState, action); }))
   .add('funReducerWithMemo', create(action => { curriedState = funReducerWithMemo(curriedState, action); }))
   .add('hiddenReducer', create(action => { hiddenState = hiddenReducer(hiddenState, action); }))
+  .add('hiddenReducerRuntime', create(action => { runtimeState = runtimeReducer(runtimeState, action); }))
   .add('immutableReducer', create(action => { immutableState = immutableReducer(immutableState, action); }))
   .add('spreadReducer', create(action => { spreadState = spreadReducer(spreadState, action); }))
   .add('bitsReducer', create(action => { bitsState = bitsReducer(bitsState, action); }))
@@ -61,7 +64,8 @@ suite
 
 console.log('funUtils has fast properties:', %HasFastProperties(funState));
 console.log('funReducerWithMemo has fast properties:', %HasFastProperties(curriedState));
-console.log('hiddenUtils has fast properties:', %HasFastProperties(hiddenState));
+console.log('hiddenState has fast properties:', %HasFastProperties(hiddenState));
+console.log('hiddenStateRuntime has fast properties:', %HasFastProperties(runtimeState));
 console.log('immutable has fast properties:', %HasFastProperties(immutableState));
 console.log('spread has fast properties:', %HasFastProperties(spreadState));
 console.log('lens has fast properties:', %HasFastProperties(lensState));
