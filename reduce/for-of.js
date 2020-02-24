@@ -17,6 +17,13 @@ while (i++ < 15) {
   videos.push(...videos);
 }
 const start = Date.now();
-let result = videos.reduce((acc, video) => Object.assign(acc, {[video.id]: video.title}), {});
-print('extend ', Date.now() - start);
+let value = (() => {
+  let result = {};
+  for (const v of videos) {
+    v[v.id] = v.title;
+  }
+  return result;
+})();
+
+print('for-of', Date.now() - start);
 

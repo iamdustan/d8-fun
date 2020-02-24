@@ -6,6 +6,7 @@ const cases = [
   'alloc',
   'extend',
   'mutate',
+  'for-of',
   'prof/reason',
   'prof/reasonBelt',
 ];
