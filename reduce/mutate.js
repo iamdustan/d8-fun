@@ -17,8 +17,11 @@ while (i++ < 15) {
   videos.push(...videos);
 }
 const start = Date.now();
-let result = videos.reduce((a, v) => {
-  a[v.id] = v.title;
-  return a;
-}, {});
-print('alloc ', Date.now() - start);
+let v = (() => {
+  let result = videos.reduce((a, v) => {
+    a[v.id] = v.title;
+    return a;
+  }, {});
+  return result;
+})();
+print('mutate ', Date.now() - start);
