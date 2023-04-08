@@ -42,3 +42,4 @@ module.exports = (state = defaultState, action) => {
       return state;
   }
 };
+module.exports.assoc = funAssoc;
